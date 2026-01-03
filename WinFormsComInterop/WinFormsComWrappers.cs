@@ -111,7 +111,9 @@ namespace WinFormsComInterop
         // If additional interfaces want to be exposed, add them here.
         static WinFormsComWrappers()
         {
+#if !NET10_0_OR_GREATER
             accessibleObjectEntry = CreateAccessibleObjectEntry();
+#endif
 #if !NET7_0_OR_GREATER
             enumVariantEntry = CreateEnumVariantEntry();
 #endif
@@ -222,6 +224,8 @@ namespace WinFormsComInterop
             return wrapperEntry;
         }
 
+
+#if !NET10_0_OR_GREATER
         private static void CreatePrimitivesIServiceProviderProxyVtbl(out IntPtr vtbl)
         {
             var vtblRaw = (System.IntPtr*)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(global::WinFormsComInterop.WinFormsComWrappers), sizeof(System.IntPtr) * 13);
@@ -230,6 +234,9 @@ namespace WinFormsComInterop
             vtbl = (System.IntPtr)vtblRaw;
         }
 #endif
+#endif
+
+#if !NET10_0_OR_GREATER
         private static ComInterfaceEntry* CreateAccessibleObjectEntry()
         {
             CreatePrimitivesIRawElementProviderSimpleProxyVtbl(out var rawElementProviderSimpleVtbl);
@@ -243,6 +250,8 @@ namespace WinFormsComInterop
             wrapperEntry[1].Vtable = serviceProviderVtbl;
             return wrapperEntry;
         }
+#endif
+
 #if !NET8_0_OR_GREATER
         private static ComInterfaceEntry* CreateWebBrowserSiteEntry()
         {
